@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>現役 NBA 球員</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .player {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px;
+            display: inline-block;
+            cursor: pointer;
+        }
+        .player:hover {
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>現役 NBA 球員名單</h1>
+    <div id="players"></div>  <!-- 顯示球員的地方 -->
+
+    <script>
+        // 從 API 取得所有現役球員
+        async function fetchPlayers() {
+            try {
+                const response = await fetch('https://www.balldontlie.io/api/v1/players');
+                const data = await response.json();
+
+                // 取得球員資料並顯示在頁面上
+                const playersContainer = document.getElementById("players");
+                data.data.forEach(player => {
+                    const playerDiv = document.createElement("div");
+                    playerDiv.classList.add("player");
+                    playerDiv.textContent = `${player.first_name} ${player.last_name}`;
+                    // 當球員被點擊時，顯示其詳情或執行其他操作
+                    playerDiv.onclick = () => {
+                        alert(`選擇的球員：${player.first_name} ${player.last_name}`);
+                    };
+                    playersContainer.appendChild(playerDiv);
+                });
+            } catch (error) {
+                console.error('Error fetching players:', error);
+            }
+        }
+
+        // 當頁面加載時，呼叫 fetchPlayers 函數
+        fetchPlayers();
+    </script>
+
+</body>
+</html>

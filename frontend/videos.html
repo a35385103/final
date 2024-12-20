@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>儲存的影片</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(180deg, #013369, #ce1141);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            background: linear-gradient(90deg, #013369, #ce1141);
+            color: #fff;
+            text-align: center;
+            padding: 2em 1em;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            width: 100%;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 3rem;
+        }
+        header p {
+            margin: 0.5em 0 0;
+            font-size: 1.2rem;
+        }
+        .video-list {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            width: 80%;
+            max-width: 1000px;
+        }
+        .video-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+        .video-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        .video-item p {
+            font-size: 1rem;
+            color: #ccc;
+        }
+        .btn {
+            background: #ff5722;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background: #ff784e;
+        }
+        .delete-btn {
+            background: #d32f2f;
+            margin-top: 10px;
+        }
+        .delete-btn:hover {
+            background: #e57373;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>儲存的影片</h1>
+    </header>
+
+    <div class="video-list" id="videoList">
+       
+    </div>
+
+    <footer>
+        NBA FanSpace &copy; 2024
+    </footer>
+
+    <script>
+      
+        const savedVideosKey = "savedVideos";
+        let savedVideos = JSON.parse(localStorage.getItem(savedVideosKey)) || [];
+
+        const videoListContainer = document.getElementById("videoList");
+
+        function renderVideos() {
+            videoListContainer.innerHTML = ""; 
+            if (savedVideos.length === 0) {
+                videoListContainer.innerHTML = "<p>目前沒有儲存的影片。</p>";
+            } else {
+                savedVideos.forEach((video, index) => {
+                
+                    if (!document.querySelector(`[data-link='${video.link}']`)) {
+                        const videoItem = document.createElement("div");
+                        videoItem.classList.add("video-item");
+                        videoItem.setAttribute("data-link", video.link);
+
+                        videoItem.innerHTML = `
+                            <a href="${video.link}" target="_blank" class="btn">觀看影片</a>
+                            <p>${video.description}</p>
+                            <button class="btn delete-btn" onclick="deleteVideo(${index})">刪除</button>
+                        `;
+
+                        videoListContainer.appendChild(videoItem);
+                    }
+                });
+            }
+        }
+
+        
+        function deleteVideo(index) {
+            
+            savedVideos.splice(index, 1);
+           
+            localStorage.setItem(savedVideosKey, JSON.stringify(savedVideos));
+           
+            renderVideos();
+        }
+
+        renderVideos();
+    </script>
+</body>
+</html>

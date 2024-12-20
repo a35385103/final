@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA FanSpace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(180deg, #013369, #ce1141);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            background: linear-gradient(90deg, #013369, #ce1141);
+            color: #fff;
+            text-align: center;
+            padding: 2em 1em;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 3rem;
+            font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        header p {
+            margin: 0.5em 0 0;
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+        main {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+        }
+        .card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            width: 280px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8);
+        }
+        .card:before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            z-index: 0;
+            transform: rotate(45deg);
+        }
+        .card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1;
+            position: relative;
+        }
+        .card h2:before {
+            font-size: 1.2rem;
+        }
+        .btn {
+            background: #ff5722;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+            margin-top: 10px;
+            z-index: 1;
+        }
+        .btn:hover {
+            background: #ff784e;
+            transform: scale(1.05);
+        }
+        input, textarea {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.9rem;
+        }
+        textarea {
+            resize: none;
+            height: 80px;
+        }
+        #teamList {
+            list-style: none;
+            padding: 0;
+            margin-top: 10px;
+            width: 100%;
+        }
+        #teamList li {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 5px 10px;
+            margin: 5px 0;
+            font-size: 0.9rem;
+            color: #fff;
+        }
+        #fact {
+            font-size: 1rem;
+            font-weight: 400;
+            margin-top: 10px;
+            color: #ddd;
+        }
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #bbb;
+        }
+        @media (max-width: 768px) {
+            .card {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+  <header>
+    <h1>NBA FanSpace</h1>
+    <p>歡迎來到屬於籃球迷的平台</p>
+    <div id="login" class="login-btn">
+        <button class="btn">登入</button>
+    </div>
+</header>
+
+    <main>
+        <div class="card">
+            <h2>NBA賽程日曆</h2>
+            <button class="btn">查看賽程</button>
+        </div>
+
+        <div class="card">
+            <h2>喜愛球員精華</h2>
+            <input type="text" id="videoLink" placeholder="影片連結">
+            <textarea id="videoDescription" placeholder="描述此影片"></textarea>
+            <button class="btn" onclick="saveVideo()">儲存影片</button>
+            <button class="btn" onclick="viewSavedVideos()">前往查看儲存的影片</button>
+        </div>
+
+        <div class="card">
+            <h2>即時球員數據</h2>
+            <input type="text" id="playerName" placeholder="輸入球員名稱">
+            <button class="btn">查詢數據</button>
+        </div>
+
+        <div class="card">
+            <h2>個人夢幻球隊</h2> 
+            <a href="editteam.html">
+                <button class="btn">前往編輯球隊</button>
+            </a>
+        </div>
+        <div class="card">
+            <h2>NBA知識小卡</h2>
+            <button class="btn" onclick="showfact()">顯示知識小卡</button>
+            <p id="fact"></p>
+        </div>
+    </main>
+
+    <footer>
+        NBA FanSpace &copy; 2024
+    </footer>
+
+    <script>
+      const facts = [
+    "NBA 成立於1946年，當時叫做BAA（籃球協會）。",
+      "Michael Jordan 在總決賽中從未輸過一個系列賽。",
+      "Kobe Bryant 的81分是史上單場第二高得分紀錄。",
+      "Stephen Curry 是單季三分球紀錄保持者。",
+      "NBA 目前有30支球隊，分為東西兩大聯盟。",
+      "NBA 的總部位於紐約市，靠近曼哈頓的中心地帶。",
+      "Wilt Chamberlain 曾在單場比賽中拿下100分，這是NBA歷史上最高的單場得分紀錄（1962年）。",
+      "LeBron James 是NBA史上最年輕的得分王，21歲時就獲得這個頭銜。",
+      "Kareem Abdul-Jabbar 是NBA歷史上的總得分王，職業生涯累積了38,387分。",
+      "NBA 的全明星賽始於1951年，是每年一月或二月的重頭戲。",
+      "Shaquille O'Neal 曾在季後賽中贏得3次總決賽 MVP。",
+      "Larry Bird 和 Magic Johnson 的競爭拯救了1980年代的 NBA。",
+      "Boston Celtics 是 NBA 總冠軍次數最多的球隊之一（17次）。",
+      "Los Angeles Lakers 與 Boston Celtics 並列擁有最多冠軍（17次）。",
+      "Hakeem Olajuwon 是唯一一位出生於非洲並入選名人堂的球員。",
+      "Dennis Rodman 曾獲得7次 NBA 籃板王稱號。",
+      "Dirk Nowitzki 是NBA史上最成功的歐洲球員之一，職業生涯效力於達拉斯小牛隊。",
+      "NBA 的三分球規則直到1979年才開始實施。",
+      "Michael Jordan 曾退役兩次，但仍贏得了6次 NBA 總冠軍。",
+      "Tim Duncan 被稱為“石佛”，因為他的冷靜和穩定性。",
+      "Ray Allen 在2013年總決賽的關鍵三分球拯救了 Miami Heat。",
+      "Chris Paul 是 NBA 歷史上最出色的控球後衛之一。",
+      "Allen Iverson 是NBA歷史上最矮的得分王（183公分）。",
+      "Charles Barkley 雖然從未贏得冠軍，但他被認為是史上最偉大的大前鋒之一。",
+      "Yao Ming 是第一位入選名人堂的中國球員。",
+      "Kevin Durant 是唯一一位贏得過四次得分王的現役球員。",
+      "Golden State Warriors 是第一支單季贏得73場比賽的球隊（2015-16賽季）。",
+      "Russell Westbrook 是NBA歷史上三雙紀錄最多的球員。",
+      "Magic Johnson 在20歲時就贏得了NBA總冠軍並被選為總決賽MVP。",
+      "San Antonio Spurs 曾在1999年至2014年間贏得5次冠軍。",
+      "NBA 的全球收視人數每年超過10億人。",
+      "Zion Williamson 是近年來最受期待的新秀之一。",
+      "NBA 的球員平均身高為6英尺7英寸（約200公分）。",
+      "Dikembe Mutombo 的招牌動作是蓋帽後搖手指。",
+      "Klay Thompson 在單節比賽中曾拿下37分，創下紀錄。",
+      "Vince Carter 是NBA歷史上唯一一位在四個不同的年代打球的球員。",
+      "Steve Nash 曾兩次獲得MVP，儘管他不是得分型球員。",
+      "Patrick Ewing 是紐約尼克斯的傳奇球員，但從未贏得總冠軍。",
+      "Derrick Rose 是NBA歷史上最年輕的MVP（22歲）。",
+      "NBA 每年的選秀大會是年輕球員加入聯盟的主要途徑。",
+      "Kawhi Leonard 是唯一一位在兩支不同球隊奪得總決賽 MVP 的現役球員。",
+      "NBA 的球迷人數中有40%以上來自美國以外的國家。",
+      "Pau Gasol 是第一位贏得NBA總冠軍的西班牙球員。",
+      "Dwight Howard 曾三次獲得年度最佳防守球員。",
+      "Oscar Robertson 是第一位在整個賽季場均達到三雙的球員（1961-62）。",
+      "Kevin Garnett 是第一位直接從高中進入NBA並獲得MVP的球員。",
+      "NBA 在2004年引入了即時回放技術以解決裁判爭議。",
+      "Julius Erving（Dr. J）是NBA灌籃比賽的靈感來源。",
+      "Spud Webb 是史上最矮的灌籃大賽冠軍（168公分）。",
+      "Manu Ginobili 是NBA歷史上最成功的第六人之一。",
+      "NBA 的夏季聯賽為新秀和年輕球員提供了展示舞台。",
+      "Karl Malone 是NBA歷史上第二高的得分手，但未曾贏得總冠軍。",
+      "NBA 官方比賽用球是由 Spalding 製造的，但在2021年改用 Wilson。",
+      "Muggsy Bogues 是NBA歷史上最矮的球員（160公分）。",
+      "George Mikan 是NBA的第一個明星球員，帶動了籃球運動的發展。",
+      "NBA 在1992年首次允許職業球員參加奧運會（夢幻隊）。",
+      "Scottie Pippen 是唯一一位在同一年贏得 NBA 冠軍和奧運金牌的球員。",
+      "NBA 的奧布萊恩總冠軍獎杯於1977年啟用。",
+      "Bill Russell 贏得了11個NBA總冠軍，是NBA歷史上最多的球員。",
+      "NBA 在2020年首次舉辦泡泡比賽，以應對疫情挑戰。",
+      "Devin Booker 是NBA歷史上最年輕的單場70分得主（20歲）。",
+      "Kobe Bryant 的暱稱“黑曼巴”源自他的狠勁與專注。",
+      "Reggie Miller 是NBA歷史上最偉大的三分射手之一。",
+      "NBA 曾在2006年引入較輕的新型球，但因反應不佳迅速恢復原版。",
+      "NBA 季後賽的第一輪曾經是5場3勝制，後改為7場4勝制。",
+      "Dominique Wilkins 是“灌籃大賽之王”，8次入選全明星。",
+      "NBA 的大部分收入來自轉播權和贊助商。",
+      "NBA 在2008年首次舉辦了國際常規賽（中國）。",
+      "Andrew Wiggins 是第一位獲得NBA狀元秀的加拿大球員。",
+      "Jayson Tatum 是2022年贏得NBA東區決賽MVP的第一人。",
+      "NBA 的首場比賽於1946年在多倫多舉行。",
+      "Rudy Gobert 是現役球員中最多次贏得年度最佳防守球員的球員之一。"
+      ];
+      
+      function showfact() {
+          const randomIndex = Math.floor(Math.random() * facts.length);
+          document.getElementById('fact').innerText = facts[randomIndex];
+      }
+
+      const savedVideosKey = "savedVideos";
+
+      function saveVideo() {
+          const videoLink = document.getElementById("videoLink").value;
+          const videoDescription = document.getElementById("videoDescription").value;
+
+          if (!videoLink || !videoDescription) {
+              alert("請填寫影片連結與描述！");
+              return;
+          }
+
+          const savedVideos = JSON.parse(localStorage.getItem(savedVideosKey)) || [];
+
+          savedVideos.push({ link: videoLink, description: videoDescription });
+
+          localStorage.setItem(savedVideosKey, JSON.stringify(savedVideos));
+
+          document.getElementById("videoLink").value = "";
+          document.getElementById("videoDescription").value = "";
+
+          alert("影片已成功儲存！");
+      }
+
+      function viewSavedVideos() {
+          window.location.href = "videos.html";
+      }
+    </script>
+</body>
+</html>
